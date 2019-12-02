@@ -1,4 +1,7 @@
 package com.verycreatives.popularmovies.viewmodels
 
-class DetailsViewModel {
+import androidx.lifecycle.ViewModel
+
+class DetailsViewModel : ViewModel() {
+
 }

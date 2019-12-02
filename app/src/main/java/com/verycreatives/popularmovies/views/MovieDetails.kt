@@ -1,7 +1,8 @@
-package com.verycreatives.popularmovies
+package com.verycreatives.popularmovies.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.verycreatives.popularmovies.R
 
 class MovieDetails : AppCompatActivity() {
 

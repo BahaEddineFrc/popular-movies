@@ -1,4 +1,68 @@
 package com.verycreatives.popularmovies.viewmodels
 
-class MoviesViewModel {
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.verycreatives.popularmovies.models.Movie
+import com.verycreatives.popularmovies.models.MoviesResponse
+import com.verycreatives.popularmovies.network.RestApiClient
+import com.verycreatives.popularmovies.repository.MoviesRepository
+import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+
+class MoviesViewModel : ViewModel() {
+
+   // private val repository = MoviesRepository.instance
+
+
+    private val _isRefreshing = MutableLiveData<Boolean>()
+    val isRefreshing: LiveData<Boolean>
+        get() = _isRefreshing
+
+    private val _error = MutableLiveData<Boolean>()
+    val error: LiveData<Boolean>
+        get() = _error
+
+    private val _movies = MutableLiveData<List<Movie>>()
+    val movies: LiveData<List<Movie>>
+        get() = _movies
+
+    fun getMovies() {
+
+        _isRefreshing.value = true
+
+        RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : SingleObserver<MoviesResponse> {
+
+                var disposable: Disposable? = null
+
+                override fun onSubscribe(d: Disposable) {
+                    disposable = d
+                }
+
+                override fun onSuccess(response: MoviesResponse) {
+                    disposable?.dispose()
+                    _movies.postValue(response.results)
+                    Log.d("heree","onSuccess | pages received = "+response.total_pages)
+                    //repository.insertAllAndSynchronize(response.results)
+                    _isRefreshing.value = false
+                    _error.value = false
+                }
+
+                override fun onError(e: Throwable) {
+                    _isRefreshing.value = false
+                    Log.d("heree","onError | Throwable received = "+e.message)
+                    _error.value = true
+                }
+
+            }
+
+            )
+    }
+
 }
