@@ -1,4 +1,4 @@
-package com.verycreatives.popularmovies.repository
+package com.verycreatives.popularmovies
 
 import android.app.Application
 import com.verycreatives.popularmovies.database.AppDatabase

@@ -1,5 +1,6 @@
 package com.verycreatives.popularmovies.repository
 
+import com.verycreatives.popularmovies.MyApplication
 import com.verycreatives.popularmovies.database.MoviesDao
 import com.verycreatives.popularmovies.models.Movie
 
@@ -9,6 +10,8 @@ class MoviesRepository(private val moviesDao: MoviesDao) {
 
 
     fun getFavMovies() = moviesDao.getFavMovies()
+
+    fun getMovieById(id : Int) = moviesDao.getMovieById(id)
 
     fun insertFavorite(movie: Movie?) : Long {
         return moviesDao.insertFavorite(movie)

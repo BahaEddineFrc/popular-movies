@@ -47,7 +47,7 @@ class DetailsViewModel : ViewModel() {
         //Log.d("hereee","setUpDetails Title : ${movie.title}")
     }
 
-    fun onFavoriteClicked(v:View){
+    fun onFavoriteClicked( ){
 
         if (favorite.get()){
             //was favorite -> delete
@@ -63,6 +63,12 @@ class DetailsViewModel : ViewModel() {
     }
 
     fun getMovieById(id : Int) {
+        val mov :Movie?=localRepo.getMovieById(id).value
+
+        if (mov!=null){
+            movie.postValue(mov)
+            setUpDetails(mov)
+        }else
         RestApiClient.retrofit.getMovieById(id,"8d61230b01928fe55a53a48a41dc839b")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
