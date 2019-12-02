@@ -58,4 +58,5 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.2'
     kapt 'androidx.room:room-compiler:2.2.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.9.1"
 }

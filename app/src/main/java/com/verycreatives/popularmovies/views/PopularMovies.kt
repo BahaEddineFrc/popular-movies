@@ -77,7 +77,7 @@ class PopularMovies : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this,2)
 
         val adapter = MoviesAdapter(this, emptyPlaceholder) {movie->
-            intent = Intent(applicationContext, DetailsViewModel::class.java)
+            intent = Intent(this@PopularMovies, MovieDetails::class.java)
             val bundle = bundleOf("movie" to movie)
             startActivity(intent,bundle)
         }
