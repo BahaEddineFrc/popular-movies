@@ -6,15 +6,17 @@ import com.verycreatives.popularmovies.models.Movie
 
 class MoviesRepository(private val moviesDao: MoviesDao) {
 
-    fun createOrUpdate(movie: Movie) : Long{
-        return moviesDao.createOrUpdate(movie)
+
+
+    fun getFavMovies() = moviesDao.getFavMovies()
+
+    fun insertFavorite(movie: Movie?) : Long {
+        return moviesDao.insertFavorite(movie)
     }
 
-    fun insertAllAndSynchronize(pots: List<Movie>) {
-        return moviesDao.insertAllAndSynchronize(pots)
+    fun delete(movie: Movie?) : Int {
+        return moviesDao.delete(movie)
     }
-
-    fun getMovies(page: Int) = moviesDao.getMovies()
 
     companion object {
         val instance : MoviesRepository= MoviesRepository(MyApplication.database.moviesDao())

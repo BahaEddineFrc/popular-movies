@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.verycreatives.popularmovies.models.Movie
 import com.verycreatives.popularmovies.models.MoviesResponse
 import com.verycreatives.popularmovies.network.RestApiClient
+import com.verycreatives.popularmovies.repository.MoviesRepository
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,6 +20,8 @@ import java.time.LocalDate
 import java.util.*
 
 class DetailsViewModel : ViewModel() {
+
+    private val localRepo = MoviesRepository.instance
 
     var movie = MutableLiveData<Movie>()
 
@@ -32,7 +35,7 @@ class DetailsViewModel : ViewModel() {
     var pic = ObservableField<String>()
 
 
-    fun setUpDetails(movie: Movie) {
+    private fun setUpDetails(movie: Movie) {
         title.set(movie.title)
         imdbRate.set(movie.vote_average)
         pic.set(movie.poster_path)
@@ -41,7 +44,22 @@ class DetailsViewModel : ViewModel() {
         yearRelease.set(movie.release_date.substring(0,4))
         movie.runtime?.let { duration.set(it) }
         movie.tagline?.let { tagLine.set(it) }
-        Log.d("hereee","setUpDetails Title : ${movie.title}")
+        //Log.d("hereee","setUpDetails Title : ${movie.title}")
+    }
+
+    fun onFavoriteClicked(v:View){
+
+        if (favorite.get()){
+            //was favorite -> delete
+            localRepo.delete(movie.value)
+            Log.d("hereee","favorite deleted from database")
+        }else{
+            //wasn't favorite
+            localRepo.insertFavorite(movie.value)
+            Log.d("hereee","favorite added to database")
+        }
+
+
     }
 
     fun getMovieById(id : Int) {
