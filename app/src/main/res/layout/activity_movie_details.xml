@@ -1,9 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.MovieDetails">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.verycreatives.popularmovies.viewmodels.DetailsViewModel" />
+    </data>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:blurImg="@{viewmodel.pic}"
+                android:foreground="@drawable/black_gradient_mask"
+                android:scaleType="centerCrop" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <RelativeLayout
+                android:paddingTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="160dp"
+                    android:layout_height="210dp"
+                    android:layout_margin="20dp"
+                    android:img="@{viewmodel.pic}" />
+
+                <TextView
+                    android:id="@+id/title0"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img"
+                    android:text="@{viewmodel.title}"
+                    android:textAlignment="center"
+                    android:textSize="36sp" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:textColor="@color/gray"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title0"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="@{viewmodel.tagLine.empty? 4 : 1}"
+                    android:text="@{`'`+viewmodel.tagLine+`'`}"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/year"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/gray"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:text="@{`released in `+viewmodel.yearRelease}" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/year"
+                    android:textColor="@color/gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:text="@{`lasts `+viewmodel.duration+` Min`}" />
+
+                <TextView
+                    android:id="@+id/imdb_rate"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/gray"
+                    android:layout_marginStart="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title"
+                    android:layout_alignParentStart="true"
+                    android:text="@{viewmodel.imdbRate+`/10 on IMDB`}" />
+
+                <View
+                    android:background="@color/white"
+                    android:layout_below="@+id/imdb_rate"
+                    android:id="@+id/line1"
+                    android:layout_width = "match_parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_height="1dp"/>
+
+                <TextView
+                    android:layout_below="@id/line1"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/gray"
+                    android:layout_height="wrap_content"
+                    android:text="@{`'' `+viewmodel.description+` ''`}" />
+            </RelativeLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+</layout>

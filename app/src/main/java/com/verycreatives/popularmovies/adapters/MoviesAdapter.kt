@@ -69,7 +69,6 @@ class MoviesAdapter(private val context: Context, private var emptyView: View? =
 
             binding.cardLayout.setOnClickListener {
                 callback.invoke(mov)
-                Log.d("heree","binding.cardLayout.setOnClickListener : "+mov.original_title)
             }
             binding.movie  = mov
             binding.executePendingBindings()

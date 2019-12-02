@@ -18,4 +18,9 @@ interface RestApiInterface {
     @GET("movie/popular")
     fun getMoviesByPopularity(@Query("api_key") api_key : String): Single<MoviesResponse>
 
+    @Headers("api_key: 8d61230b01928fe55a53a48a41dc839b")
+    @GET("movie/{movie_id}")
+    fun getMovieById(@Path("movie_id") id:Int, @Query("api_key") api_key: String ): Single<Movie>
+
+
 }

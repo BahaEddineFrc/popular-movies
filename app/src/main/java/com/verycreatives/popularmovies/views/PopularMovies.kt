@@ -78,8 +78,8 @@ class PopularMovies : AppCompatActivity() {
 
         val adapter = MoviesAdapter(this, emptyPlaceholder) {movie->
             intent = Intent(this@PopularMovies, MovieDetails::class.java)
-            val bundle = bundleOf("movie" to movie)
-            startActivity(intent,bundle)
+            intent.putExtra("movieId",movie.id)
+            startActivity(intent)
         }
 
         recyclerView.adapter = adapter
