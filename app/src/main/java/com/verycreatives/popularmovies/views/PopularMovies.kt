@@ -4,13 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.LinearLayout
-import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
@@ -19,12 +19,13 @@ import com.verycreatives.popularmovies.adapters.MoviesAdapter
 import com.verycreatives.popularmovies.databinding.ActivityPopularMoviesBinding
 import com.verycreatives.popularmovies.viewmodels.DetailsViewModel
 import com.verycreatives.popularmovies.viewmodels.MoviesViewModel
+import android.widget.Toast
+
+
 
 class PopularMovies : AppCompatActivity() {
 
     private lateinit var binding : ActivityPopularMoviesBinding
-    val recyclerView : RecyclerView? = null
-    val emptyPlaceholder : LinearLayout? = null
     private lateinit var  model : MoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,11 +33,7 @@ class PopularMovies : AppCompatActivity() {
         setContentView(R.layout.activity_popular_movies)
 
 
-        val toolbar=findViewById<Toolbar>(R.id.toolbar)
         val swipeRefreshLayout=findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
-
-
-        //setSupportActionBar(toolbar)
 
         swipeRefreshLayout.setProgressViewOffset(true, START_SWIPE_REFRESH, resources.getDimension(R.dimen.swipe_refresh_offset).toInt())
 
@@ -45,7 +42,7 @@ class PopularMovies : AppCompatActivity() {
         model = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         binding.viewmodel=model
 
-        model.getMovies()
+        //model.getMovies(SORT_POPUL)
 
         model.error.observe(this, androidx.lifecycle.Observer { isError->
             if(isError)
@@ -58,7 +55,7 @@ class PopularMovies : AppCompatActivity() {
 
 
         swipeRefreshLayout.setOnRefreshListener {
-            model.getMovies()
+            model.getMovies(SORT_POPUL)
         }
 
         setUpRecyclerView()
@@ -67,6 +64,9 @@ class PopularMovies : AppCompatActivity() {
 
     companion object {
         private const val START_SWIPE_REFRESH = 50
+        const val SORT_POPUL = 1
+        const val SORT_RANK = 2
+        const val SORT_FAV = 3
     }
 
     private fun setUpRecyclerView() {
@@ -84,12 +84,38 @@ class PopularMovies : AppCompatActivity() {
 
         recyclerView.adapter = adapter
 
-        binding.viewmodel?.getMovies()
+        binding.viewmodel?.getMovies(SORT_POPUL)
 
         model.movies.observe(this, Observer { movies ->
             adapter.setMovies(movies)
             Log.d("heree","model.movies.observed")
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.movies_sort_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        //noinspection SimplifiableIfStatement
+
+        if (id == R.id.popular_sort) {
+            model.getMovies(SORT_POPUL)
+            return true
+        }
+        if (id == R.id.top_rated_sort) {
+            model.getMovies(SORT_RANK)
+            return true
+        }
+        if (id == R.id.fav_sort) {
+            model.getMovies(SORT_FAV)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
 }

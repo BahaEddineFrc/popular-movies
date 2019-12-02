@@ -1,21 +1,23 @@
 package com.verycreatives.popularmovies.viewmodels
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.verycreatives.popularmovies.models.Movie
 import com.verycreatives.popularmovies.models.MoviesResponse
 import com.verycreatives.popularmovies.network.RestApiClient
-import com.verycreatives.popularmovies.repository.MoviesRepository
+import com.verycreatives.popularmovies.views.PopularMovies
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlin.coroutines.coroutineContext
 
 class MoviesViewModel : ViewModel() {
 
-   // private val repository = MoviesRepository.instance
+    // private val repository = MoviesRepository.instance
 
 
     private val _isRefreshing = MutableLiveData<Boolean>()
@@ -30,39 +32,67 @@ class MoviesViewModel : ViewModel() {
     val movies: LiveData<List<Movie>>
         get() = _movies
 
-    fun getMovies() {
+    fun getMovies(sort_type: Int) {
 
         _isRefreshing.value = true
+        when (sort_type) {
 
-        RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<MoviesResponse> {
+            PopularMovies.SORT_RANK -> {
+                RestApiClient.retrofit.getMoviesByRate("8d61230b01928fe55a53a48a41dc839b")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<MoviesResponse> {
+                        var disposable: Disposable? = null
+                        override fun onSubscribe(d: Disposable) {
+                            disposable = d
+                        }
 
-                var disposable: Disposable? = null
+                        override fun onSuccess(response: MoviesResponse) {
+                            disposable?.dispose()
+                            _movies.postValue(response.results)
+                            Log.d("heree", "onSuccess | pages received = " + response.total_pages)
+                            //repository.insertAllAndSynchronize(response.results)
+                            _isRefreshing.value = false
+                            _error.value = false
+                        }
 
-                override fun onSubscribe(d: Disposable) {
-                    disposable = d
-                }
-
-                override fun onSuccess(response: MoviesResponse) {
-                    disposable?.dispose()
-                    _movies.postValue(response.results)
-                    Log.d("heree","onSuccess | pages received = "+response.total_pages)
-                    //repository.insertAllAndSynchronize(response.results)
-                    _isRefreshing.value = false
-                    _error.value = false
-                }
-
-                override fun onError(e: Throwable) {
-                    _isRefreshing.value = false
-                    Log.d("heree","onError | Throwable received = "+e.message)
-                    _error.value = true
-                }
-
+                        override fun onError(e: Throwable) {
+                            _isRefreshing.value = false
+                            Log.d("heree", "onError | Throwable received = " + e.message)
+                            _error.value = true
+                        }
+                    })
             }
+            PopularMovies.SORT_POPUL -> {
+                RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<MoviesResponse> {
+                        var disposable: Disposable? = null
+                        override fun onSubscribe(d: Disposable) {
+                            disposable = d
+                        }
 
-            )
+                        override fun onSuccess(response: MoviesResponse) {
+                            disposable?.dispose()
+                            _movies.postValue(response.results)
+                            //Log.d("heree", "onSuccess | pages received = " + response.total_pages)
+                            //repository.insertAllAndSynchronize(response.results)
+                            _isRefreshing.value = false
+                            _error.value = false
+                        }
+
+                        override fun onError(e: Throwable) {
+                            _isRefreshing.value = false
+                            Log.d("heree", "onError | Throwable received = " + e.message)
+                            _error.value = true
+                        }
+                    })
+            }
+            PopularMovies.SORT_FAV -> {
+                _isRefreshing.value = false
+            }
+        }
     }
 
 }

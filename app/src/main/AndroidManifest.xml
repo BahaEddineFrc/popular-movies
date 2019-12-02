@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".views.MovieDetails"></activity>
-        <activity android:name=".views.PopularMovies">
+        <activity android:name=".views.PopularMovies"
+            android:theme="@style/AppThemeNAB" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
