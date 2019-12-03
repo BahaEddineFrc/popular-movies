@@ -12,10 +12,10 @@ abstract class MoviesDao {
     abstract fun getFavMovies() : List<Movie>
 
     @Query("SELECT * FROM Movie where id = :id")
-    abstract fun getMovieById(id : Int) : LiveData<Movie>
+    abstract fun getMovieById(id : Int) : Movie
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract fun insertFavorite(movie: Movie?): Long
+    abstract fun insertFavorite(movie: Movie?) :Long
 
     @Delete
     abstract fun delete(movie : Movie?): Int

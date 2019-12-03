@@ -10,13 +10,13 @@ import kotlin.collections.ArrayList
 data class Movie(
     @PrimaryKey val id: Int,
     val title: String,
-    val favorite: Boolean?,
+    var favorite: Boolean?,
     val video: Boolean,
     val adult: Boolean,
     val backdrop_path: String?,
     //val belongs_to_collection: Any?
     //val budget: Int
-    val genres_ids: ArrayList<Int>,
+    ////val genres_ids: ArrayList<Int>,
     //val homepage: String?
     //val imdb_id: String?
     val original_language: String,

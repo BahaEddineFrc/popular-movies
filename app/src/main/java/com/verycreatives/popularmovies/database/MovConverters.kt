@@ -6,7 +6,6 @@ import java.util.Arrays.asList
 import kotlin.collections.ArrayList
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.util.Collections.emptyList
 
 
 
@@ -22,22 +21,6 @@ class MovConverters {
         return date?.time
     }
 
-    /*@TypeConverter
-    fun fromIntegersToStr(ints: ArrayList<Int>): String {
-        var value = ""
-
-        for (i in ints)
-            value += "$i,"
-
-        return value
-    }
-
-    @TypeConverter
-    fun fromStringToInt(str: String) : ArrayList<Int>  {
-        val list = listOf(str.split("\\s*,\\s*"))
-        return list
-    }*/
-
     @TypeConverter
     fun storedStringToIntArray(data: String?): ArrayList<Int> {
         val gson = Gson()
@@ -50,8 +33,11 @@ class MovConverters {
     }
 
     @TypeConverter
-    fun intArrayToStoredString(ints: ArrayList<Int>): String {
+    fun intArrayToStoredString(ints: ArrayList<Int>?): String {
         val gson = Gson()
+        if (ints == null) {
+            return ""
+        }
         return gson.toJson(ints)
     }
 

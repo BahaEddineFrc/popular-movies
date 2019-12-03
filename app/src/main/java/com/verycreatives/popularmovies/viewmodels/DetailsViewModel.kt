@@ -1,29 +1,35 @@
 package com.verycreatives.popularmovies.viewmodels
 
 import android.util.Log
-import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.verycreatives.popularmovies.models.Movie
-import com.verycreatives.popularmovies.models.MoviesResponse
 import com.verycreatives.popularmovies.network.RestApiClient
 import com.verycreatives.popularmovies.repository.MoviesRepository
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.time.LocalDate
-import java.util.*
 
 class DetailsViewModel : ViewModel() {
 
+
+
     private val localRepo = MoviesRepository.instance
 
-    var movie = MutableLiveData<Movie>()
+    private val _isRefreshing = MutableLiveData<Boolean>()
+    val isRefreshing: LiveData<Boolean>
+        get() = _isRefreshing
+
+    private val _error = MutableLiveData<Boolean>()
+    val error: LiveData<Boolean>
+        get() = _error
+
+    val movie = MutableLiveData<Movie>()
+
 
     val title = ObservableField<String>()
     val description = ObservableField<String>()
@@ -41,60 +47,71 @@ class DetailsViewModel : ViewModel() {
         pic.set(movie.poster_path)
         description.set(movie.overview)
         movie.favorite?.let { favorite.set(it) }
-        yearRelease.set(movie.release_date.substring(0,4))
+        yearRelease.set(movie.release_date.substring(0, 4))
         movie.runtime?.let { duration.set(it) }
         movie.tagline?.let { tagLine.set(it) }
-        //Log.d("hereee","setUpDetails Title : ${movie.title}")
     }
 
-    fun onFavoriteClicked( ){
+    fun onFavoriteClicked(buttonState: Boolean) {
 
-        if (favorite.get()){
-            //was favorite -> delete
+        if (!buttonState) {
             localRepo.delete(movie.value)
-            Log.d("hereee","favorite deleted from database")
-        }else{
-            //wasn't favorite
-            localRepo.insertFavorite(movie.value)
-            Log.d("hereee","favorite added to database")
+        } else {
+            movie.value?.let {
+                it.favorite=true
+                Log.d("hereee", "favorite added "+localRepo.insertFavorite(movie.value))
+            }
         }
 
 
     }
 
-    fun getMovieById(id : Int) {
-        val mov :Movie?=localRepo.getMovieById(id).value
+    fun getMovieById(id: Int) {
+        /*movie = liveData {
+            localRepo.getMovieById(id).map {
+                setUpDetails(it)
+                Log.d("hereee", "local mov != null")
+                Result.success(it)
+            }*/
 
-        if (mov!=null){
-            movie.postValue(mov)
-            setUpDetails(mov)
-        }else
-        RestApiClient.retrofit.getMovieById(id,"8d61230b01928fe55a53a48a41dc839b")
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<Movie> {
-                var disposable: Disposable? = null
-                override fun onSubscribe(d: Disposable) {
-                    disposable = d
-                }
 
-                override fun onSuccess(response: Movie) {
-                    disposable?.dispose()
-                    movie.postValue(response)
-                    setUpDetails(response)
+            val m = localRepo.getMovieById(id)
+            if (m!=null) {
+                movie.postValue(m)
+                setUpDetails(m)
+            }else {
+                _isRefreshing.value = true
+                RestApiClient.retrofit.getMovieById(id, "8d61230b01928fe55a53a48a41dc839b")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<Movie> {
+                        var disposable: Disposable? = null
+                        override fun onSubscribe(d: Disposable) {
+                            disposable = d
+                        }
 
-                    Log.d("heree", "onSuccess getMovieById | received = " + response)
-                    //repository.insertAllAndSynchronize(response.results)
-                    //_isRefreshing.value = false
-                    //_error.value = false
-                }
+                        override fun onSuccess(response: Movie) {
+                            disposable?.dispose()
 
-                override fun onError(e: Throwable) {
-                    //_isRefreshing.value = false
-                    Log.d("heree", "onError | Throwable received = " + e.message)
-                    //_error.value = true
-                }
-            })
+                            if (movie.value?.title == null || movie.value?.title!!.isEmpty())
+                             {
+                                movie.postValue(response)
+                                setUpDetails(response)
+                            }
+                            _isRefreshing.value = false
+                            _error.value = false
+                        }
+
+                        override fun onError(e: Throwable) {
+                            _isRefreshing.value = false
+                            Log.d("heree", "onError | Throwable received = " + e.message)
+                            _error.value = true
+                        }
+                    })
+            }
+
+        }
+
+
     }
 
-}

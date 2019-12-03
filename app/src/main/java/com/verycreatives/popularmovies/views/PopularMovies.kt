@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,8 +43,6 @@ class PopularMovies : AppCompatActivity() {
         model = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         binding.viewmodel=model
 
-        //model.getMovies(SORT_POPUL)
-
         model.error.observe(this, androidx.lifecycle.Observer { isError->
             if(isError)
                 Snackbar.make(binding.root,"Server error", Snackbar.LENGTH_LONG).show()
@@ -72,11 +71,11 @@ class PopularMovies : AppCompatActivity() {
     private fun setUpRecyclerView() {
 
         val recyclerView : RecyclerView = findViewById(R.id.movies_rv)
-        val emptyPlaceholder : LinearLayout = findViewById(R.id.empty_placeholder)
+        val emptyPlaceholder : RelativeLayout = findViewById(R.id.empty_placeholder)
 
         recyclerView.layoutManager = GridLayoutManager(this,2)
 
-        val adapter = MoviesAdapter(this, emptyPlaceholder) {movie->
+        val adapter = MoviesAdapter(emptyPlaceholder) {movie->
             intent = Intent(this@PopularMovies, MovieDetails::class.java)
             intent.putExtra("movieId",movie.id)
             startActivity(intent)
@@ -88,7 +87,6 @@ class PopularMovies : AppCompatActivity() {
 
         model.movies.observe(this, Observer { movies ->
             adapter.setMovies(movies)
-            Log.d("heree","model.movies.observed")
         })
     }
 

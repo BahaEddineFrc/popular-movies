@@ -51,8 +51,6 @@ class MoviesViewModel : ViewModel() {
                         override fun onSuccess(response: MoviesResponse) {
                             disposable?.dispose()
                             _movies.postValue(response.results)
-                            Log.d("heree", "onSuccess | pages received = " + response.total_pages)
-                            //repository.insertAllAndSynchronize(response.results)
                             _isRefreshing.value = false
                             _error.value = false
                         }
@@ -77,8 +75,6 @@ class MoviesViewModel : ViewModel() {
                         override fun onSuccess(response: MoviesResponse) {
                             disposable?.dispose()
                             _movies.postValue(response.results)
-                            //Log.d("heree", "onSuccess | pages received = " + response.total_pages)
-                            //repository.insertAllAndSynchronize(response.results)
                             _isRefreshing.value = false
                             _error.value = false
                         }
@@ -95,8 +91,9 @@ class MoviesViewModel : ViewModel() {
                 val tempList =ArrayList<Movie>()
 
                 //add favorite movies
-                tempList.addAll(localRepo.getFavMovies())
-
+                localRepo.getFavMovies()?.let {
+                    tempList.addAll(it)
+                }
                 RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -116,8 +113,6 @@ class MoviesViewModel : ViewModel() {
                             }
                             _movies.postValue(tempList)
 
-                            //Log.d("heree", "onSuccess | pages received = " + response.total_pages)
-                            //repository.insertAllAndSynchronize(response.results)
 
                             _isRefreshing.value = false
                             _error.value = false

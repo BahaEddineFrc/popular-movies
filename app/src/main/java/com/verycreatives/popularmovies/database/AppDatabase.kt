@@ -10,7 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.verycreatives.popularmovies.models.Movie
 
 
-@Database(entities = [Movie::class], version = 1)
+@Database(entities = [Movie::class], version = 1, exportSchema = false)
 @TypeConverters(MovConverters::class)
 
 abstract class AppDatabase : RoomDatabase() {
@@ -27,6 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) : AppDatabase {
             return Room.
                 databaseBuilder( context, AppDatabase::class.java, DATABASE_NAME)
+                .allowMainThreadQueries()
                 .addCallback(object : Callback() {
                     override fun onOpen(db: SupportSQLiteDatabase) {
                         super.onOpen(db)

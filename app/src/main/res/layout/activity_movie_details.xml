@@ -12,145 +12,152 @@
     </data>
 
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-        <ImageView
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:blurImg="@{viewmodel.pic}"
-            android:foreground="@drawable/black_gradient_mask"
-            android:scaleType="centerCrop" />
+            android:layout_height="wrap_content">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="An error occured while loading"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:visibility="@{viewmodel.movie.title.empty? 1 : 8}" />
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:blurImg="@{viewmodel.pic}"
+                android:foreground="@drawable/black_gradient_mask"
+                android:scaleType="centerCrop" />
 
-                <com.varunest.sparkbutton.SparkButton
-                    android:id="@+id/spark_button"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+            <ScrollView
+                android:id="@+id/scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewmodel.movie.title.empty? 8 : 1}">
 
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="10dp"
-                    app:sparkbutton_activeImage="@drawable/heart_red"
-                    app:sparkbutton_iconSize="36dp"
-                    app:sparkbutton_inActiveImage="@drawable/heart_gray"
-                    app:sparkbutton_primaryColor="@color/red_plus"
-                    app:sparkbutton_secondaryColor="@color/orange" />
-
-                <com.jackandphantom.androidlikebutton.AndroidLikeButton
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_margin="10dp"
-                    app:liked="true"
-                    app:circle_endColor="#f4ac1b"
-                    app:circle_startColor="#fcd229"
-                    app:dot_color_1="#f5ce31"
-                    app:dot_color_2="#ed8128"
-                    app:like_icon="@drawable/heart_red"
-                    app:unlike_icon="@drawable/heart_gray" />
-
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="160dp"
-                    android:layout_height="210dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="70dp"
-                    android:layout_marginBottom="20dp"
-                    android:img="@{viewmodel.pic}" />
-
-                <TextView
-                    android:id="@+id/title0"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/img"
-                    android:text="@{viewmodel.title}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="36sp"
-                    android:visibility="@{viewmodel.title.empty? 4 : 1}" />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/title"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title0"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:text="@{`'`+viewmodel.tagLine+`'`}"
-                    android:textAlignment="center"
-                    android:textColor="@color/gray"
-                    android:visibility="@{viewmodel.tagLine.empty? 4 : 1}" />
+                    <com.varunest.sparkbutton.SparkButton
+                        android:id="@+id/spark_button"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
 
-                <TextView
-                    android:id="@+id/year"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="20dp"
-                    android:text="@{`released in `+viewmodel.yearRelease}"
-                    android:textColor="@color/gray"
-                    android:visibility="@{viewmodel.yearRelease.empty? 4 : 1}" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="10dp"
+                        app:sparkbutton_activeImage="@drawable/heart_red"
+                        app:sparkbutton_iconSize="36dp"
+                        app:sparkbutton_inActiveImage="@drawable/heart_gray"
+                        app:sparkbutton_primaryColor="@color/red_plus"
+                        app:sparkbutton_secondaryColor="@color/orange" />
 
-                <TextView
-                    android:id="@+id/duration"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/year"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="20dp"
-                    android:text="@{`lasts `+viewmodel.duration+` Min`}"
-                    android:textColor="@color/gray" />
 
-                <TextView
-                    android:id="@+id/imdb_rate"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="20dp"
-                    android:text="@{viewmodel.imdbRate+`/10 on IMDB`}"
-                    android:textColor="@color/gray" />
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_width="160dp"
+                        android:layout_height="210dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="70dp"
+                        android:layout_marginBottom="20dp"
+                        android:img="@{viewmodel.pic}" />
 
-                <View
-                    android:id="@+id/line1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/imdb_rate"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/white" />
+                    <TextView
+                        android:id="@+id/title0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/img"
+                        android:text="@{viewmodel.title}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="36sp"
+                        android:visibility="@{viewmodel.title.empty? 4 : 1}" />
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/line1"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:text="@{`'' `+viewmodel.description+` ''`}"
-                    android:textColor="@color/gray"
-                    android:visibility="@{viewmodel.description.empty? 4 : 1}" />
-            </RelativeLayout>
-        </ScrollView>
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title0"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="@{`'`+viewmodel.tagLine+`'`}"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:visibility="@{viewmodel.tagLine.empty? 4 : 1}" />
 
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/year"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:text="@{`released in `+viewmodel.yearRelease}"
+                        android:textColor="@color/gray"
+                        android:visibility="@{viewmodel.yearRelease==null? 8 : 1}" />
 
+                    <TextView
+                        android:id="@+id/duration"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/year"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:visibility="@{viewmodel.duration==0? 8 : 1}"
+                        android:text="@{`lasts `+viewmodel.duration+` Min`}"
+                        android:textColor="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/imdb_rate"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="20dp"
+                        android:text="@{viewmodel.imdbRate+`/10 on IMDB`}"
+                        android:visibility="@{viewmodel.imdbRate==0? 8 : 1}"
+                        android:textColor="@color/gray" />
+
+                    <View
+                        android:id="@+id/line1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/imdb_rate"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/white" />
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/line1"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@{`'' `+viewmodel.description+` ''`}"
+                        android:textColor="@color/gray"
+                        android:visibility="@{viewmodel.description==null? 8 : 1}" />
+                </RelativeLayout>
+            </ScrollView>
+
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

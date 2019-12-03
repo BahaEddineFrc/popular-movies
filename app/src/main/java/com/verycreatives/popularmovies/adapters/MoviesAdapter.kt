@@ -12,7 +12,7 @@ import com.verycreatives.popularmovies.databinding.MovieItemBinding
 import com.verycreatives.popularmovies.models.Movie
 
 
-class MoviesAdapter(private val context: Context, private var emptyView: View? = null,
+class MoviesAdapter(private var emptyView: View? = null,
                     private var callback :(Movie)->Unit) :
     RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 

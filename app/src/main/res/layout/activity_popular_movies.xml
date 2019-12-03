@@ -17,22 +17,22 @@
         android:layout_height="wrap_content">
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="5dp"
                 tools:context=".views.PopularMovies">
 
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:padding="5dp"
                     android:id="@+id/movies_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="@{viewmodel.movies.empty? 8 : 1}" />
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/empty_placeholder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,21 +41,20 @@
                     android:visibility="@{viewmodel.movies.empty? 1 : 8}">
 
                     <ImageView
-                        android:id="@+id/no_pots_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_launcher_foreground" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/gallery"
+                        android:foreground="@drawable/black_gradient_mask"
+                        android:scaleType="centerCrop" />
 
                     <TextView
-                        android:id="@+id/no_pots_text"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerInParent="true"
                         android:text="No movies to be shown"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </RelativeLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
