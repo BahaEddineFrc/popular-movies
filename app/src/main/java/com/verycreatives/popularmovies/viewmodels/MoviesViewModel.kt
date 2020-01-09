@@ -87,6 +87,7 @@ class MoviesViewModel : ViewModel() {
                     })
             }
             PopularMovies.SORT_FAV -> {
+                Log.d("heree", "PopularMovies.SORT_FAV -> " )
                 _isRefreshing.value = false
                 val tempList =ArrayList<Movie>()
 
@@ -95,6 +96,8 @@ class MoviesViewModel : ViewModel() {
                     tempList.addAll(it)
 
                 }
+
+                _movies.postValue(tempList)
 
                 /*RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
                     .subscribeOn(Schedulers.io())

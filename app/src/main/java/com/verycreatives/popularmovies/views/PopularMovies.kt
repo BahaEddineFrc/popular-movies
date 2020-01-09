@@ -108,7 +108,7 @@ class PopularMovies : AppCompatActivity() {
             model.getMovies(SORT_RANK)
             return true
         }
-        if (id == R.id.fav_sort) {
+        if (id == R.id.action_fav) {
             model.getMovies(SORT_FAV)
             return true
         }

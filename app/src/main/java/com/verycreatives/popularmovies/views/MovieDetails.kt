@@ -2,6 +2,7 @@ package com.verycreatives.popularmovies.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -41,6 +42,7 @@ class MovieDetails : AppCompatActivity() {
         if (id > 0) model.getMovieById(id)
 
         model.movie.observe(this, Observer {
+            Log.d("hereee","$it")
             it.favorite?.let { spark_button.isChecked = it }
         })
 
@@ -56,6 +58,10 @@ class MovieDetails : AppCompatActivity() {
         model.isRefreshing.observe(this, Observer {it->
             swipeRefreshLayout.isRefreshing=it
         })
+
+        swipeRefreshLayout.setOnRefreshListener {
+            model.getMovieById(id)
+        }
 
 
 

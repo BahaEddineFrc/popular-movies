@@ -17,7 +17,7 @@ data class Movie(
     //val belongs_to_collection: Any?
     //val budget: Int
     ////val genres_ids: ArrayList<Int>,
-    //val homepage: String?
+    val homepage: String?,
     //val imdb_id: String?
     val original_language: String,
     val original_title: String,

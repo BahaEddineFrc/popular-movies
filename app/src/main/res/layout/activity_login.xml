@@ -64,7 +64,7 @@
                     <EditText
                         android:text="@={viewmodel.email}"
                         android:id="@+id/login_username"
-                        android:textColor="@color/gray2"
+                        android:textColor="@color/darkgray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -78,7 +78,7 @@
                     <EditText
                         android:id="@+id/login_password"
                         android:text="@={viewmodel.password}"
-                        android:textColor="@color/gray2"
+                        android:textColor="@color/darkgray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />
@@ -98,6 +98,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Forgot your password?"
+                    android:layout_marginBottom="10dp"
                     android:textColor="@color/transparent_black" />
 
             </LinearLayout>
@@ -110,10 +111,10 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone"
-            android:layout_margin="30dp"
+            android:layout_margin="40dp"
             android:elevation="7dp"
             android:padding="8dp"
-            app:cardBackgroundColor="@color/cardview_dark_background"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
             app:cardCornerRadius="10dp">
 
             <RelativeLayout
@@ -147,7 +148,7 @@
                     android:layout_below="@+id/tv_title"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
-                    android:hint="Username"
+                    android:hint="Email"
                     android:theme="@style/AppTheme.Dark">
 
                     <EditText
@@ -207,6 +208,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentBottom="false"
                     android:layout_marginTop="@dimen/list_divider_offset"
+                    android:layout_marginBottom="10dp"
                     android:onClick="@{(v)->viewmodel.register(v)}"
                     android:text="NEXT" />
 

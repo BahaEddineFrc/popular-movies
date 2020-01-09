@@ -23,6 +23,7 @@ import kotlin.math.hypot
 import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.github.ybq.android.spinkit.sprite.Sprite
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.github.ybq.android.spinkit.SpinKitView
 
@@ -67,6 +68,7 @@ class Login : AppCompatActivity() {
 
         val fab = findViewById<FloatingActionButton>(R.id.register_fab)
         val croix = findViewById<ImageButton>(R.id.b_close)
+        val forgotPass = findViewById<TextView>(R.id.tv_forgot_password)
 
         fab.setOnClickListener {
             fab.hide()
@@ -91,6 +93,11 @@ class Login : AppCompatActivity() {
             hideCardAnimated(cardRegister)
             fab.show()
         }
+
+        forgotPass.setOnClickListener {
+            startActivity(Intent(this@Login,PopularMovies::class.java))
+        }
+
     }
 
     private fun showCardAnimated(card: CardView) {
@@ -100,7 +107,7 @@ class Login : AppCompatActivity() {
 
         val finalRadius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
 
-        val anim = ViewAnimationUtils.createCircularReveal(card, cx, card.height, 0f, finalRadius*2)
+        val anim = ViewAnimationUtils.createCircularReveal(card, card.width, 0, 0f, finalRadius*2)
         card.visibility = View.VISIBLE
         anim.start()
     }
