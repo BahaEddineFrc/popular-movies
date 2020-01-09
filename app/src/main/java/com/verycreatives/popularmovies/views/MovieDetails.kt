@@ -1,5 +1,6 @@
 package com.verycreatives.popularmovies.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import com.verycreatives.popularmovies.databinding.ActivityMovieDetailsBinding
 import com.verycreatives.popularmovies.viewmodels.DetailsViewModel
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 
@@ -49,9 +51,7 @@ class MovieDetails : AppCompatActivity() {
         model.error.observe(this, androidx.lifecycle.Observer { isError->
             if(isError) {
                 Snackbar.make(binding.root, "Server error", Snackbar.LENGTH_LONG).show()
-
                 scrollview.visibility= View.GONE
-
             }
         })
 
@@ -62,6 +62,13 @@ class MovieDetails : AppCompatActivity() {
         swipeRefreshLayout.setOnRefreshListener {
             model.getMovieById(id)
         }
+
+
+        model.urlPageToStart.observe(this, Observer {url->
+            var i : Intent = Intent(this@MovieDetails,Website::class.java)
+            i.putExtra("homepageUrl",url)
+            startActivity(i)
+        })
 
 
 

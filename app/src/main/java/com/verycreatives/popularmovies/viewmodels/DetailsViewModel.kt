@@ -1,6 +1,10 @@
 package com.verycreatives.popularmovies.viewmodels
 
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableDouble
 import androidx.databinding.ObservableField
@@ -9,13 +13,13 @@ import androidx.lifecycle.*
 import com.verycreatives.popularmovies.models.Movie
 import com.verycreatives.popularmovies.network.RestApiClient
 import com.verycreatives.popularmovies.repository.MoviesRepository
+import com.verycreatives.popularmovies.views.Website
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class DetailsViewModel : ViewModel() {
-
 
 
     private val localRepo = MoviesRepository.instance
@@ -29,6 +33,7 @@ class DetailsViewModel : ViewModel() {
         get() = _error
 
     val movie = MutableLiveData<Movie>()
+    val urlPageToStart = MutableLiveData<String>()
 
 
     val title = ObservableField<String>()
@@ -58,10 +63,17 @@ class DetailsViewModel : ViewModel() {
             localRepo.delete(movie.value)
         } else {
             movie.value?.let {
-                it.favorite=true
-                Log.d("hereee", "favorite added "+localRepo.insertFavorite(movie.value))
+                it.favorite = true
+                Log.d("hereee", "favorite added " + localRepo.insertFavorite(movie.value))
             }
         }
+
+
+    }
+
+    fun toWebPage(v: View) {
+
+        urlPageToStart.value=movie.value?.homepage
 
 
     }
@@ -75,43 +87,42 @@ class DetailsViewModel : ViewModel() {
             }*/
 
 
-            val m = localRepo.getMovieById(id)
-            if (m!=null) {
-                movie.postValue(m)
-                setUpDetails(m)
-            }else {
-                _isRefreshing.value = true
-                RestApiClient.retrofit.getMovieById(id, "8d61230b01928fe55a53a48a41dc839b")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : SingleObserver<Movie> {
-                        var disposable: Disposable? = null
-                        override fun onSubscribe(d: Disposable) {
-                            disposable = d
+        val m = localRepo.getMovieById(id)
+        if (m != null) {
+            movie.postValue(m)
+            setUpDetails(m)
+        } else {
+            _isRefreshing.value = true
+            RestApiClient.retrofit.getMovieById(id, "8d61230b01928fe55a53a48a41dc839b")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<Movie> {
+                    var disposable: Disposable? = null
+                    override fun onSubscribe(d: Disposable) {
+                        disposable = d
+                    }
+
+                    override fun onSuccess(response: Movie) {
+                        disposable?.dispose()
+
+                        if (movie.value?.title == null || movie.value?.title!!.isEmpty()) {
+                            movie.postValue(response)
+                            setUpDetails(response)
                         }
+                        _isRefreshing.value = false
+                        _error.value = false
+                    }
 
-                        override fun onSuccess(response: Movie) {
-                            disposable?.dispose()
-
-                            if (movie.value?.title == null || movie.value?.title!!.isEmpty())
-                             {
-                                movie.postValue(response)
-                                setUpDetails(response)
-                            }
-                            _isRefreshing.value = false
-                            _error.value = false
-                        }
-
-                        override fun onError(e: Throwable) {
-                            _isRefreshing.value = false
-                            Log.d("heree", "onError | Throwable received = " + e.message)
-                            _error.value = true
-                        }
-                    })
-            }
-
+                    override fun onError(e: Throwable) {
+                        _isRefreshing.value = false
+                        Log.d("heree", "onError | Throwable received = " + e.message)
+                        _error.value = true
+                    }
+                })
         }
 
-
     }
+
+
+}
 
