@@ -93,8 +93,10 @@ class MoviesViewModel : ViewModel() {
                 //add favorite movies
                 localRepo.getFavMovies()?.let {
                     tempList.addAll(it)
+
                 }
-                RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
+
+                /*RestApiClient.retrofit.getMoviesByPopularity("8d61230b01928fe55a53a48a41dc839b")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : SingleObserver<MoviesResponse> {
@@ -123,7 +125,7 @@ class MoviesViewModel : ViewModel() {
                             Log.d("heree", "onError | Throwable received = " + e.message)
                             _error.value = true
                         }
-                    })
+                    })*/
             }
         }
     }

@@ -19,4 +19,67 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppThemeNoBar" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/gray</item>
+    </style>
+
+
+
+    <style name="AppTheme.Dark">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+
+    <style name="Title">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="Title.Dark">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="OkButton">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">28dp</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="OkButton.Dark">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="InsetLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+
+    <style name="LeftHighlight">
+        <item name="android:layout_width">4dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:background">@drawable/divider_left</item>
+
+        <item name="android:layout_marginBottom">-5dp</item>
+        <item name="android:layout_marginTop">-5dp</item>
+    </style>
 </resources>

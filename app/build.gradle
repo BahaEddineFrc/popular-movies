@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -33,6 +34,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 
@@ -46,7 +48,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     implementation 'com.github.varunest:sparkbutton:1.0.6'
-
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     // Networking
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
@@ -59,6 +61,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3' //display gif
 
     //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-beta01'
     //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01'
